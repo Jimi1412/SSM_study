@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation=
+               "http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd
+
+        http://www.springframework.org/schema/context
+        https://www.springframework.org/schema/context/spring-context.xsd
+
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <bean id="cat1" class="com.ye.pojo.Cat"/>
+<!--    <bean id="cat2" class="com.ye.pojo.Cat"/>-->
+    <bean id="dog" class="com.ye.pojo.Dog"/>
+    <bean id="people" class="com.ye.pojo.People">
+        <property name="name" value="宵夜"/>
+    </bean>
+
+    <!--自动装配 byName 忽略大小写，但形如catXXX 的bean 是装配不了的
+                byType  一个类只能有一个bean -->
+    <!--<bean id="people" class="com.ye.pojo.People.ye.pojo.People" autowire="byName" >
+        <property name="name" value="小叶"/>
+    </bean>-->
+
+    <!-- 使用注解 先导入context约束 再开启注解-->
+    <context:annotation-config/>
+
+    <bean id="userService2" class="proxy_test4.UserServiceImpl"/>
+<!--    动态代理第一种方式-->
+  <!--  <bean id="log" class="proxy_test4.Log"/>
+    <bean id="after" class="proxy_test4.After"/>
+   <aop:config>
+        <aop:pointcut id="pointCut" expression="execution(* proxy_test4.UserServiceImpl.*(..))"/>
+       <aop:advisor advice-ref="log" pointcut-ref="pointCut"/>
+       <aop:advisor advice-ref="after" pointcut-ref="pointCut"/>
+   </aop:config>
+-->
+    <!--    动态代理第二种方式 直接把前置后置方法写在一个类里 用 aop aspect 切面 来配置
+    切入点 pointCut 即要增强的方法是哪个
+    通知，即前置后置环绕等方法 -->
+    <!--<bean id="proxyLog" class="proxy_test4.ProxyLog"/>
+    <aop:config>
+        <aop:pointcut id="pointCut" expression="execution(* proxy_test4.UserServiceImpl.*(..))"/>
+        <aop:aspect  ref="proxyLog">
+            <aop:before method="before" pointcut-ref="pointCut"/>
+            <aop:after method="after" pointcut-ref="pointCut"/>
+        </aop:aspect>
+    </aop:config>-->
+
+    <!--动态代理第三种方式  使用注解-->
+    <aop:aspectj-autoproxy/>
+    <bean id="proxyLog2" class="proxy_test4.ProxyLog2"/>
+
+</beans>

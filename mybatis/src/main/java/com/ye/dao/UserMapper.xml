@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ye.dao.UserMapper">
+    <select id="getUserByRowBounds" resultType="user">
+        select * from user
+    </select>
+    <select id="selectUser"  resultType="com.ye.bean.User">
+    <!--select * from user -->
+    <!-- 添加 分页处理-->
+    select * from user
+    </select>
+    <select id="selectUserLimit" parameterType="map" resultType="com.ye.bean.User">
+    <!--select * from user -->
+    <!-- 添加 分页处理-->
+    select * from user limit  #{startIndex},#{pageSize}
+    </select>
+    <select id="selectUserById" resultType="com.ye.bean.User">
+     select * from user where id = #{id}
+    </select>
+    <select id="selectUserByNP" resultType="com.ye.bean.User">
+     select * from user where name = #{username} and pwd = #{pwd}
+    </select>
+    <select id="selectUserByNP2" parameterType="map" resultType="com.ye.bean.User">
+     select * from user where name = #{username} and pwd = #{pwd}
+    </select>
+    <insert id="addUser" parameterType="com.ye.bean.User">
+     insert into user (id,name,pwd) values (#{id},#{name},#{pwd})
+    </insert>
+    <update id="updateUser" parameterType="com.ye.bean.User">
+     update user set name=#{name}, pwd=#{pwd} where id=#{id}
+    </update>
+    <delete id="deleteUser" >
+     delete from user where id=#{id}
+    </delete>
+    <select id="selectLike" resultType="user">
+
+     <!-- select * from user where name like #{str}-->
+    <!-- 下面这种方式会引起sql注入  不能是' 得是 "-->
+    select * from user where name like "%"#{str}"%"
+    <!-- select * from user where name like concat('%',#{str},'%')-->
+    </select>
+</mapper>
